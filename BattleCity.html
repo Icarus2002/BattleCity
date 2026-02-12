@@ -3,9 +3,12 @@
 <html>
 <head>
   <title>Battle City</title>
-  
+
+  <!-- ВАЖНО для мобильных -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
   <link rel="stylesheet" type="text/css" href="css/BattleCity.css" />
-  
+
   <script type="text/javascript" src="lib/jquery-1.7.2.js"></script>
 
   <script type="text/javascript" src="src/Utils.js"></script>
@@ -95,10 +98,10 @@
   <script type="text/javascript" src="src/Trees.js"></script>
   <script type="text/javascript" src="src/Water.js"></script>
   <script type="text/javascript" src="src/LoadingScene.js"></script>
-  
+
   <script type="text/javascript" src="lib/Stats.js"></script>
   <script type="text/javascript" src="src/FPSCounter.js"></script>
-  
+
   <script type="text/javascript" src="src/ImageManager.js"></script>
   <script type="text/javascript" src="src/Construction.js"></script>
   <script type="text/javascript" src="src/SpriteSerializerController.js"></script>
@@ -108,24 +111,24 @@
   <script type="text/javascript">
     $(function () {
       var FPS = 50;
-      
+
       var CANVAS_ID = 'canvas';
       var ctx = createCanvasContext();
       ctx.font = "16px prstart"
-      
+
       var eventManager = new EventManager();
       var keyboard = new Keyboard(eventManager);
       var sceneManager = new SceneManager(eventManager);
       sceneManager.toLoadingScene();
-      
+
       setInterval(gameLoop, 1000 / FPS);
-      
+
       function gameLoop() {
         keyboard.fireEvents();
         sceneManager.update();
         sceneManager.draw(ctx);
       }
-      
+
       function createCanvasContext() {
         $('<canvas id="' + CANVAS_ID + '" width="' + Globals.CANVAS_WIDTH + '" height="' + Globals.CANVAS_HEIGHT + '"></canvas>').prependTo('#main');
         var canvas = document.getElementById(CANVAS_ID);
@@ -160,253 +163,257 @@
       </table>
     </div>
   </div>
+
   <!-- =========================
-     MOBILE TOUCH CONTROLS
-     Paste before </body>
-========================= -->
+       MOBILE TOUCH CONTROLS
+       Paste before </body>
+  ========================= -->
 
-<style>
-  /* показываем только на тач-устройствах */
-  @media (pointer: fine) {
-    .bcTouchWrap { display: none !important; }
-  }
-
-  .bcTouchWrap{
-    position: fixed;
-    left: calc(12px + env(safe-area-inset-left));
-    right: calc(12px + env(safe-area-inset-right));
-    bottom: calc(12px + env(safe-area-inset-bottom));
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    z-index: 999999;
-    pointer-events: none; /* включим клики только внутри панелей */
-  }
-
-  .bcTouchPad, .bcTouchActions{
-    pointer-events: auto;
-    background: rgba(0,0,0,.35);
-    border: 1px solid rgba(255,255,255,.18);
-    backdrop-filter: blur(10px);
-    border-radius: 18px;
-    padding: 10px;
-    box-shadow: 0 12px 40px rgba(0,0,0,.35);
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: none;
-  }
-
-  .bcTouchPad{
-    display: grid;
-    grid-template-columns: repeat(3, 52px);
-    grid-template-rows: repeat(3, 52px);
-    gap: 8px;
-    align-items: center;
-    justify-items: center;
-  }
-
-  .bcTouchActions{
-    display: grid;
-    grid-template-columns: 92px;
-    grid-auto-rows: 52px;
-    gap: 8px;
-    align-content: start;
-  }
-
-  .bcBtn{
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.08);
-    color: rgba(255,255,255,.95);
-    font-weight: 900;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: none;
-  }
-
-  .bcBtn:active{ transform: translateY(1px); }
-
-  .bcAction{
-    height: 52px;
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: linear-gradient(135deg, rgba(102,217,255,.22), rgba(255,92,122,.18));
-    color: rgba(255,255,255,.96);
-    font-weight: 900;
-    font-size: 13px;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-  }
-
-  .bcAction.secondary{
-    background: rgba(255,255,255,.08);
-    font-weight: 850;
-  }
-
-  .bcSpacer{
-    width: 52px;
-    height: 52px;
-  }
-
-  /* чуть уменьшим на очень маленьких экранах */
-  @media (max-width: 360px){
-    .bcTouchPad{ grid-template-columns: repeat(3, 46px); grid-template-rows: repeat(3, 46px); }
-    .bcBtn{ width: 46px; height: 46px; border-radius: 14px; }
-    .bcTouchActions{ grid-template-columns: 84px; grid-auto-rows: 46px; }
-    .bcAction{ height: 46px; border-radius: 14px; font-size: 12px; }
-    .bcSpacer{ width: 46px; height: 46px; }
-  }
-</style>
-
-<div class="bcTouchWrap" id="bcTouchWrap" aria-hidden="true">
-  <!-- D-Pad -->
-  <div class="bcTouchPad">
-    <div class="bcSpacer"></div>
-    <button class="bcBtn" data-key="ArrowUp" data-keycode="38" aria-label="Вверх">▲</button>
-    <div class="bcSpacer"></div>
-
-    <button class="bcBtn" data-key="ArrowLeft" data-keycode="37" aria-label="Влево">◀</button>
-    <div class="bcSpacer"></div>
-    <button class="bcBtn" data-key="ArrowRight" data-keycode="39" aria-label="Вправо">▶</button>
-
-    <div class="bcSpacer"></div>
-    <button class="bcBtn" data-key="ArrowDown" data-keycode="40" aria-label="Вниз">▼</button>
-    <div class="bcSpacer"></div>
-  </div>
-
-  <!-- Actions -->
-  <div class="bcTouchActions">
-    <button class="bcAction" id="bcFire" data-key=" " data-keycode="32">ОГОНЬ</button>
-    <button class="bcAction secondary" id="bcStart" data-key="Enter" data-keycode="13">START</button>
-    <button class="bcAction secondary" id="bcCtrl" data-key="Control" data-keycode="17">CTRL</button>
-  </div>
-</div>
-
-<script>
-(function () {
-  // На всякий случай отключаем “резиновый” скролл на тачах
-  try {
-    document.documentElement.style.overscrollBehavior = 'none';
-    document.body.style.overscrollBehavior = 'none';
-  } catch(e){}
-
-  // Пытаемся сфокусировать страницу игры (важно для обработчиков keydown)
-  function ensureFocus(){
-    try { window.focus(); } catch(e){}
-    // Если у игры есть canvas — попробуем дать ему фокус
-    var c = document.
-      querySelector('canvas');
-    if (c) {
-      if (!c.hasAttribute('tabindex')) c.setAttribute('tabindex', '0');
-      try { c.focus(); } catch(e){}
+  <style>
+    /* показываем только на тач-устройствах */
+    @media (pointer: fine) {
+      .bcTouchWrap { display: none !important; }
     }
-  }
 
-  function makeKeyboardEvent(type, key, keyCode){
-    var ev;
+    .bcTouchWrap{
+      position: fixed;
+      left: calc(14px + env(safe-area-inset-left));
+      right: calc(14px + env(safe-area-inset-right));
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      z-index: 999999;
+      pointer-events: none; /* клики только внутри панелей */
+    }
+
+    .bcTouchPad, .bcTouchActions{
+      pointer-events: auto;
+      background: rgba(0,0,0,.38);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 12px;
+      box-shadow: 0 14px 46px rgba(0,0,0,.42);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* ====== УВЕЛИЧЕННЫЕ РАЗМЕРЫ ====== */
+    .bcTouchPad{
+      display: grid;
+      grid-template-columns: repeat(3, 68px);
+      grid-template-rows: repeat(3, 68px);
+      gap: 10px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .bcTouchActions{
+      display: grid;
+      grid-template-columns: 132px;
+      grid-auto-rows: 68px;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .bcBtn{
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.96);
+      font-weight: 900;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+    }
+
+    .bcBtn:active{ transform: translateY(1px); }
+
+    .bcAction{
+      height: 68px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(102,217,255,.24), rgba(255,92,122,.20));
+      color: rgba(255,255,255,.97);
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: .2px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .bcAction.secondary{
+      background: rgba(255,255,255,.10);
+      font-weight: 850;
+    }
+
+    .bcSpacer{
+      width: 68px;
+      height: 68px;
+    }
+
+    /* маленькие телефоны — чуть уменьшаем, чтобы не съедало весь экран */
+    @media (max-width: 390px){
+      .bcTouchPad{ grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 9px; }
+      .bcBtn{ width: 60px; height: 60px; border-radius: 18px; font-size: 17px; }
+      .bcTouchActions{ grid-template-columns: 122px; grid-auto-rows: 60px; gap: 9px; }
+      .bcAction{ height: 60px; border-radius: 18px; font-size: 14px; }
+      .bcSpacer{ width: 60px; height: 60px; }
+      .bcTouchPad, .bcTouchActions{ border-radius: 20px; padding: 10px; }
+    }
+
+    /* совсем маленькие */
+    @media (max-width: 360px){
+      .bcTouchPad{ grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(3, 56px); gap: 8px; }
+      .bcBtn{ width: 56px; height: 56px; border-radius: 16px; font-size: 16px; }
+      .bcTouchActions{ grid-template-columns: 114px; grid-auto-rows: 56px; gap: 8px; }
+      .bcAction{ height: 56px; border-radius: 16px; font-size: 13px; }
+      .bcSpacer{ width: 56px; height: 56px; }
+    }
+  </style>
+
+  <div class="bcTouchWrap" id="bcTouchWrap" aria-hidden="true">
+    <!-- D-Pad -->
+    <div class="bcTouchPad">
+      <div class="bcSpacer"></div>
+      <button class="bcBtn" data-key="ArrowUp" data-keycode="38" aria-label="Вверх">▲</button>
+      <div class="bcSpacer"></div>
+      <button class="bcBtn" data-key="ArrowLeft" data-keycode="37" aria-label="Влево">◀</button>
+      <div class="bcSpacer"></div>
+      <button class="bcBtn" data-key="ArrowRight" data-keycode="39" aria-label="Вправо">▶</button>
+
+      <div class="bcSpacer"></div>
+      <button class="bcBtn" data-key="ArrowDown" data-keycode="40" aria-label="Вниз">▼</button>
+      <div class="bcSpacer"></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="bcTouchActions">
+      <button class="bcAction" id="bcFire" data-key=" " data-keycode="32">ОГОНЬ</button>
+      <button class="bcAction secondary" id="bcStart" data-key="Enter" data-keycode="13">START</button>
+      <button class="bcAction secondary" id="bcCtrl" data-key="Control" data-keycode="17">CTRL</button>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    // отключаем “резиновый” скролл
     try {
-      ev = new KeyboardEvent(type, {
-        key: key,
-        code: key,
-        bubbles: true,
-        cancelable: true
-      });
-      // keyCode/which часто read-only — подменим через defineProperty
-      Object.defineProperty(ev, 'keyCode', { get: function(){ return keyCode; } });
-      Object.defineProperty(ev, 'which',   { get: function(){ return keyCode; } });
-    } catch (e) {
-      ev = document.createEvent('Event');
-      ev.initEvent(type, true, true);
-      ev.keyCode = keyCode;
-      ev.which = keyCode;
-    }
-    return ev;
-  }
+      document.documentElement.style.overscrollBehavior = 'none';
+      document.body.style.overscrollBehavior = 'none';
+    } catch(e){}
 
-  function keyDown(key, keyCode){
-    ensureFocus();
-    var ev = makeKeyboardEvent('keydown', key, keyCode);
-    document.dispatchEvent(ev);
-    window.dispatchEvent(ev);
-  }
-
-  function keyUp(key, keyCode){
-    ensureFocus();
-    var ev = makeKeyboardEvent('keyup', key, keyCode);
-    document.dispatchEvent(ev);
-    window.dispatchEvent(ev);
-  }
-
-  // Для стрелок — удержание (нажат/отпустил)
-  function bindHold(btn){
-    var key = btn.getAttribute('data-key');
-    var keyCode = parseInt(btn.getAttribute('data-keycode'), 10);
-
-    var pressed = false;
-
-    function down(e){
-      e.preventDefault();
-      if (pressed) return;
-      pressed = true;
-      keyDown(key, keyCode);
-    }
-    function up(e){
-      e.preventDefault();
-      if (!pressed) return;
-      pressed = false;
-      keyUp(key, keyCode);
+    function ensureFocus(){
+      try { window.focus(); } catch(e){}
+      var c = document.querySelector('canvas');
+      if (c) {
+        if (!c.hasAttribute('tabindex')) c.setAttribute('tabindex', '0');
+        try { c.focus(); } catch(e){}
+      }
     }
 
-    // Pointer Events (лучше всего)
-    btn.addEventListener('pointerdown', down, { passive: false });
-    btn.addEventListener('pointerup', up, { passive: false });
-    btn.addEventListener('pointercancel', up, { passive: false });
-    btn.addEventListener('pointerleave', up, { passive: false });
-
-    // Fallback на старые браузеры
-    btn.addEventListener('touchstart', down, { passive: false });
-    btn.addEventListener('touchend', up, { passive: false });
-    btn.addEventListener('touchcancel', up, { passive: false });
-
-    btn.addEventListener('mousedown', down);
-    btn.addEventListener('mouseup', up);
-    btn.addEventListener('mouseleave', up);
-  }
-
-  // Для кнопок “Огонь/Start/Ctrl” — короткий тап
-  function bindTap(btn){
-    var key = btn.getAttribute('data-key');
-    var keyCode = parseInt(btn.getAttribute('data-keycode'), 10);
-
-    function tap(e){
-      e.preventDefault();
-      keyDown(key, keyCode);
-      setTimeout(function(){ keyUp(key, keyCode); }, 60);
+    function makeKeyboardEvent(type, key, keyCode){
+      var ev;
+      try {
+        ev = new KeyboardEvent(type, {
+          key: key,
+          code: key,
+          bubbles: true,
+          cancelable: true
+        });
+        Object.defineProperty(ev, 'keyCode', { get: function(){ return keyCode; } });
+        Object.defineProperty(ev, 'which',   { get: function(){ return keyCode; } });
+      } catch (e) {
+        ev = document.createEvent('Event');
+        ev.initEvent(type, true, true);
+        ev.keyCode = keyCode;
+        ev.which = keyCode;
+      }
+      return ev;
     }
 
-    btn.addEventListener('click', tap);
-    btn.addEventListener('touchstart', tap, { passive: false });
-    btn.addEventListener('pointerdown', tap, { passive: false });
-  }
+    function keyDown(key, keyCode){
+      ensureFocus();
+      var ev = makeKeyboardEvent('keydown', key, keyCode);
+      document.dispatchEvent(ev);
+      window.dispatchEvent(ev);
+    }
 
-  // Привязки
-  document.querySelectorAll('.bcTouchPad .bcBtn[data-keycode]').forEach(bindHold);
-  bindTap(document.getElementById('bcFire'));
-  bindTap(document.getElementById('bcStart'));
-  bindTap(document.getElementById('bcCtrl'));
+    function keyUp(key, keyCode){
+      ensureFocus();
+      var ev = makeKeyboardEvent('keyup', key, keyCode);
+      document.dispatchEvent(ev);
+      window.dispatchEvent(ev);
+    }
 
-  // На всякий случай, при первом тапе по экрану — фокус
-  document.addEventListener('touchstart', ensureFocus, { passive: true });
-})();
-</script>
+    // удержание для стрелок
+    function bindHold(btn){
+      var key = btn.getAttribute('data-key');
+      var keyCode = parseInt(btn.getAttribute('data-keycode'), 10);
+      var pressed = false;
 
-<!-- =========================
-     /MOBILE TOUCH CONTROLS
-========================= -->
+      function down(e){
+        e.preventDefault();
+        if (pressed) return;
+        pressed = true;
+        keyDown(key, keyCode);
+      }
+      function up(e){
+        e.preventDefault();
+        if (!pressed) return;
+        pressed = false;
+        keyUp(key, keyCode);
+      }
+
+      btn.addEventListener('pointerdown', down, { passive: false });
+      btn.addEventListener('pointerup', up, { passive: false });
+      btn.addEventListener('pointercancel', up, { passive: false });
+      btn.addEventListener('pointerleave', up, { passive: false });
+
+      btn.addEventListener('touchstart', down, { passive: false });
+      btn.addEventListener('touchend', up, { passive: false });
+      btn.addEventListener('touchcancel', up, { passive: false });
+
+      btn.addEventListener('mousedown', down);
+      btn.addEventListener('mouseup', up);
+      btn.addEventListener('mouseleave', up);
+    }
+
+    // тап для огня/старта/ctrl
+    function bindTap(btn){
+      var key = btn.getAttribute('data-key');
+      var keyCode = parseInt(btn.getAttribute('data-keycode'), 10);
+
+      function tap(e){
+        e.preventDefault();
+        keyDown(key, keyCode);
+        setTimeout(function(){ keyUp(key, keyCode); }, 60);
+      }
+
+      btn.addEventListener('click', tap);
+      btn.addEventListener('touchstart', tap, { passive: false });
+      btn.addEventListener('pointerdown', tap, { passive: false });
+    }
+
+    document.querySelectorAll('.bcTouchPad .bcBtn[data-keycode]').forEach(bindHold);
+    bindTap(document.getElementById('bcFire'));
+    bindTap(document.getElementById('bcStart'));
+    bindTap(document.getElementById('bcCtrl'));
+
+    document.
+      addEventListener('touchstart', ensureFocus, { passive: true });
+  })();
+  </script>
+
+  <!-- =========================
+       /MOBILE TOUCH CONTROLS
+  ========================= -->
 </body>
 </html>

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>23 февраля — Танковый бой</title>
+
+  <style>
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1330;
+      --bg2:#152A5B;
+      --card: rgba(255,255,255,.07);
+      --stroke: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --accent:#66D9FF;
+      --accent2:#FF5C7A;
+      --ok:#32D583;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r: 22px;
+
+      /* Крупнее кнопки сайта */
+      --btnH: 56px;
+      --btnPadX: 18px;
+      --btnFont: 16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 12% 10%, rgba(102,217,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 85% 18%, rgba(255,92,122,.16), transparent 55%),
+        radial-gradient(1100px 700px at 35% 95%, rgba(50,213,131,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 55%, var(--bg2));
+    }
+
+    .wrap{
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 18px 14px 32px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .logo{
+      width:40px;height:40px;border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 45%),
+        linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      flex:0 0 auto;
+    }
+    .brand b{
+      font-size:14px;
+      letter-spacing:.2px;
+      display:block;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 70vw;
+    }
+    .brand span{
+      display:block;
+      font-size:12px;
+      color: var(--muted);
+      margin-top:2px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(10px);
+      color: var(--muted);
+      font-size:12px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 6px rgba(50,213,131,.16);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding: 18px 18px 16px;
+    }
+    .title{
+      font-size: 30px;
+      line-height: 1.08;
+      margin: 0 0 10px;
+      letter-spacing: .2px;
+    }
+    @media (max-width: 420px){
+      .title{ font-size: 26px; }
+    }
+    .subtitle{
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .bullets{
+      display:grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style:none;
+    }
+    .bullets li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .check{
+      width:18px;height:18px;border-radius:6px;
+      background: rgba(50,213,131,.18);
+      border: 1px solid rgba(50,213,131,.35);
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+    .check::before{
+content:"✓";
+      font-weight: 800;
+      color: var(--ok);
+      font-size: 12px;
+      line-height:1;
+    }
+    .bullets b{
+      display:block;
+      font-size: 13px;
+      margin-bottom:2px;
+    }
+    .bullets span{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Крупные кнопки */
+    .ctaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top: 14px;
+    }
+    .btn{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      height: var(--btnH);
+      padding: 0 var(--btnPadX);
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: var(--btnFont);
+      color:#07101E;
+      background: linear-gradient(135deg, var(--accent), #B3F1FF);
+      box-shadow: 0 14px 34px rgba(102,217,255,.22);
+      transition: transform .08s ease, filter .08s ease;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:active{ transform: translateY(1px); filter: brightness(.98); }
+    .btnSecondary{
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      box-shadow: none;
+      font-weight: 750;
+    }
+
+    .gameHeader{
+      padding: 14px 16px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(700px 160px at 20% 0%, rgba(102,217,255,.12), transparent 60%),
+        radial-gradient(700px 160px at 85% 0%, rgba(255,92,122,.10), transparent 60%),
+        rgba(0,0,0,.08);
+    }
+    .gameHeader b{
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* ОКНО ИГРЫ — СИЛЬНО БОЛЬШЕ */
+    .gameShell{
+      position:relative;
+      background:#000;
+      overflow:hidden;
+    }
+
+    /* Высота — почти на весь экран, чтобы интерфейс точно влезал */
+    .gameViewport{
+      width:100%;
+      position:relative;
+      background:#000;
+      height: min(92vh, 1050px);
+      height: min(92svh, 1050px);
+      height: min(92dvh, 1050px);
+      min-height: 720px;
+    }
+
+    @media (max-width: 480px){
+      .gameViewport{
+        height: min(94svh, 1150px);
+        height: min(94dvh, 1150px);
+        height: min(94vh, 1150px);
+        min-height: 780px;
+      }
+    }
+
+    .gameFrame{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+      background:#000;
+    }
+
+    .overlayTop{
+      position:absolute;
+      left: 12px;
+      right: 12px;
+      top: 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 10px;
+      pointer-events:none;
+    }
+
+    .overlayBtns{
+      pointer-events:auto;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    /* крупнее кнопки сверху */
+    .miniBtn{
+      pointer-events:auto;
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.34);
+      color: rgba(255,255,255,.92);
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 850;
+      cursor:pointer;
+      user-select:none;
+      backdrop-filter: blur(10px);
+    }
+    .miniBtn:active{ transform: translateY(1px); }
+
+    .footer{
+      padding: 12px 16px 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div style="min-width:0">
+          <b>Roboland • 23 февраля</b>
+          <span>Большое окно игры + крупные кнопки</span>
+        </div>
+      </div>
+      <div class="chip"><span class="dot"></span>адаптив для телефона/ПК</div>
+    </div>
+
+    <div class="grid">
+      <section class="card hero">
+<h1 class="title">С 23 февраля! 🛡️<br>Танковый бой — прямо на странице</h1>
+        <p class="subtitle">
+          Мы сделали окно игры большим, чтобы интерфейс полностью помещался. На телефоне управление — через тач-кнопки (если ты добавил их в BattleCity.html).
+        </p>
+
+        <ul class="bullets">
+          <li>
+            <div class="check"></div>
+            <div><b>Большой экран</b><span>Почти на весь экран устройства, без “обрезания”.</span></div>
+          </li>
+          <li>
+            <div class="check"></div>
+            <div><b>Крупные кнопки</b><span>Кнопки сайта и управление — заметнее и удобнее.</span></div>
+          </li>
+          <li>
+            <div class="check"></div>
+            <div><b>Перезапуск в 1 клик</b><span>Если зависло — нажал и поехали.</span></div>
+          </li>
+        </ul>
+
+        <div class="ctaRow">
+          <button class="btn" id="btnFocus">Фокус на игру</button>
+          <button class="btn btnSecondary" id="btnOpen">Открыть отдельно</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="gameHeader">
+          <div>
+            <b>Игра</b>
+            <div class="hint">Подсказка: если на телефоне кнопки не появились — значит тач-код не вставлен в BattleCity.html.</div>
+          </div>
+          <div class="hint" style="text-align:right">
+            ПК: стрелки + пробел<br>
+            Старт: Enter
+          </div>
+        </div>
+
+        <div class="gameShell" id="gameShell">
+          <div class="gameViewport">
+            <!-- ВАЖНО: так как это твой репозиторий, можно грузить локально -->
+            <iframe
+              id="gameFrame"
+              class="gameFrame"
+              src="BattleCity.html"
+              title="Battle City"
+              loading="eager"
+              allow="fullscreen; autoplay; gamepad"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <div class="overlayTop">
+            <div></div>
+            <div class="overlayBtns">
+              <button class="miniBtn" id="btnFullscreen" type="button">⛶ Полный экран</button>
+              <button class="miniBtn" id="btnRestart" type="button">↻ Перезапуск</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          Если нужно встроить эту страницу в SaleBot — используй ссылку:
+          <b>https://icarus2002.github.io/BattleCity/23feb.html</b>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const frame = document.getElementById('gameFrame');
+      const shell = document.getElementById('gameShell');
+
+      function focusGame(){
+        try{ frame.contentWindow.focus(); }catch(e){}
+        try{ frame.focus(); }catch(e){}
+      }
+
+      document.getElementById('btnFocus').addEventListener('click', focusGame);
+
+      document.getElementById('btnOpen').addEventListener('click', () => {
+        window.open('BattleCity.html', '_blank', 'noopener');
+      });
+
+      document.getElementById('btnRestart').addEventListener('click', () => {
+        frame.src = frame.src;
+      });
+
+      document.getElementById('btnFullscreen').addEventListener('click', () => {
+        const el = shell;
+        const req = el.requestFullscreen  el.webkitRequestFullscreen  el.msRequestFullscreen;
+        if (req) req.call(el);
+      });
+
+      shell.addEventListener('click', focusGame);
+      frame.addEventListener('load', () => setTimeout(focusGame, 150));
+    })();
+  </script>
+</body>
+</html>
